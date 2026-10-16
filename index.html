@@ -174,6 +174,7 @@ ul.plain li { position: relative; padding: .3rem 0 .3rem 1.4rem; color: var(--mu
 ul.plain li::before { content: "\2014"; position: absolute; left: 0; color: var(--accent); }
 
 /* ---------- screenshots ---------- */
+/* ---------- annotated screenshots ---------- */
 figure { margin: 0 0 1.6rem; }
 figure img {
   width: 100%; height: auto; display: block;
@@ -184,6 +185,35 @@ figcaption {
   font-family: var(--mono); font-size: .76rem; color: var(--muted);
   margin-top: .6rem; letter-spacing: .04em;
 }
+
+/* numbered markers overlaid on the screenshot */
+.shot { position: relative; }
+.shot .pin {
+  position: absolute;
+  width: 30px; height: 30px;
+  display: grid; place-items: center;
+  background: var(--accent); color: #fff;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  font-family: var(--mono); font-size: .85rem; font-weight: 700;
+  box-shadow: 2px 2px 0 rgba(0,0,0,.45);
+  pointer-events: none;
+  z-index: 2;
+}
+.legend { list-style: none; margin: .9rem 0 0; padding: 0; }
+.legend li {
+  display: flex; gap: .65rem; align-items: flex-start;
+  font-size: .92rem; padding: .3rem 0;
+}
+.legend .n {
+  flex: none;
+  width: 22px; height: 22px; margin-top: .12rem;
+  display: grid; place-items: center;
+  background: var(--accent); color: #fff;
+  border-radius: 50%;
+  font-family: var(--mono); font-size: .72rem; font-weight: 700;
+}
+.legend code { background: var(--accent-bg); }
 .shot-pending {
   border: 2px dashed var(--muted); background: #faf8f3;
   padding: 2.2rem 1rem; text-align: center;
@@ -386,9 +416,19 @@ figcaption {
       </ol>
 
       <figure>
-        <img src="shots/01-create-repo.png" alt="The GitHub Create a new repository page, with stepbystep entered as the repository name and a green confirmation that the name is available." width="1000" height="844">
-        <figcaption>github.com/new &mdash; the name is available and visibility is set to Public.</figcaption>
+        <div class="shot">
+          <img src="shots/01-create-repo.png" alt="The GitHub Create a new repository page, with stepbystep entered as the repository name and a green confirmation that the name is available." width="1000" height="844">
+          <span class="pin" style="left:36%; top:35%">1</span>
+          <span class="pin" style="left:77%; top:70%">2</span>
+          <span class="pin" style="left:63%; top:96%">3</span>
+        </div>
+        <figcaption>Creating the repository</figcaption>
       </figure>
+      <ol class="legend">
+        <li><span class="n">1</span><span><strong>Repository name</strong>. This becomes your address: <code>username.github.io/&lt;this-name&gt;</code>. Keep it short &mdash; it ends up in a URL.</span></li>
+        <li><span class="n">2</span><span><strong>Description</strong>. Optional, but it&rsquo;s what people see when they land on the repo.</span></li>
+        <li><span class="n">3</span><span><strong>Public</strong>. Required &mdash; GitHub Pages on a private repo is a paid feature. Then <strong>Create repository</strong>.</span></li>
+      </ol>
 
       <h3>Upload your files</h3>
       <p>
@@ -397,13 +437,20 @@ figcaption {
         <strong>Commit changes</strong>.
       </p>
 
-      <div class="note">
-        <strong>If you&rsquo;re comfortable with git</strong>
-        <p>
-          Drag-and-drop works, but it caps out at 100 files and gives you no history
-          control. Once you&rsquo;re past the first commit, the command line is faster:
-        </p>
-      </div>
+      <figure>
+        <div class="shot">
+          <img src="shots/04-repo-files.png" alt="The stepbystep repository showing the uploaded files: a shots folder, .nojekyll, favicon.svg and index.html." width="1300" height="850">
+          <span class="pin" style="left:34%; top:42%">1</span>
+          <span class="pin" style="left:26%; top:52%">2</span>
+          <span class="pin" style="left:26%; top:76%">3</span>
+        </div>
+        <figcaption>Your files, after the commit</figcaption>
+      </figure>
+      <ol class="legend">
+        <li><span class="n">1</span><span><code>.nojekyll</code>. Empty and easy to miss &mdash; that&rsquo;s the point. If it isn&rsquo;t here, Jekyll is running and underscore-prefixed folders get skipped.</span></li>
+        <li><span class="n">2</span><span><code>CNAME.disabled</code>. This is <code>CNAME</code> deliberately renamed, because the domain isn&rsquo;t live yet. See step 4.</span></li>
+        <li><span class="n">3</span><span><code>index.html</code> and <code>favicon.svg</code>. GitHub Pages serves <code>index.html</code> at the root automatically.</span></li>
+      </ol>
 
       <pre><code>git init -b main
 git add .
@@ -457,9 +504,19 @@ git push -u origin main</code></pre>
       </p>
 
       <figure>
-        <img src="shots/02-settings-pages.png" alt="GitHub Settings, Pages section, showing Build and deployment with Source set to Deploy from a branch, branch main, folder (root), and the green box confirming the site is live." width="1300" height="850">
-        <figcaption>Settings &rarr; Pages. Source is <strong>Deploy from a branch</strong>, branch <code>main</code>, folder <code>/ (root)</code>.</figcaption>
+        <div class="shot">
+          <img src="shots/02-settings-pages.png" alt="GitHub Settings, Pages section, showing Build and deployment with Source set to Deploy from a branch, branch main, folder (root), and the green box confirming the site is live." width="1300" height="850">
+          <span class="pin" style="left:41%; top:29%">1</span>
+          <span class="pin" style="left:50%; top:48%">2</span>
+          <span class="pin" style="left:27%; top:79%">3</span>
+        </div>
+        <figcaption>Settings &rarr; Pages</figcaption>
       </figure>
+      <ol class="legend">
+        <li><span class="n">1</span><span>The green box. This is your proof it worked &mdash; the site is live at <code>username.github.io/&lt;repo&gt;/</code>. Copy that address; you&rsquo;ll test it before touching DNS.</span></li>
+        <li><span class="n">2</span><span><strong>Source</strong> dropdown set to <code>Deploy from a branch</code>, branch <code>main</code>, folder <code>/ (root)</code>. These are the three settings that matter. <code>/ (root)</code> means &ldquo;serve the files straight from the top of the repo&rdquo;.</span></li>
+        <li><span class="n">3</span><span><strong>Custom domain</strong>, a little further down the same page. That&rsquo;s where your domain goes &mdash; see the next step.</span></li>
+      </ol>
 
       <div class="note">
         <strong>Test this URL now</strong>
@@ -490,9 +547,19 @@ git push -u origin main</code></pre>
       </p>
 
       <figure>
-        <img src="shots/03-custom-domain.png" alt="GitHub Pages Custom domain field, with the Enforce HTTPS checkbox ticked and greyed out underneath." width="1300" height="850">
-        <figcaption>The <strong>Custom domain</strong> box sits above <strong>Enforce HTTPS</strong>.</figcaption>
+        <div class="shot">
+          <img src="shots/03-custom-domain.png" alt="GitHub Pages Custom domain field, with the Enforce HTTPS checkbox ticked and greyed out underneath." width="1300" height="850">
+          <span class="pin" style="left:41%; top:32%">1</span>
+          <span class="pin" style="left:19%; top:41%">2</span>
+          <span class="pin" style="left:33%; top:57%">3</span>
+        </div>
+        <figcaption>Custom domain &amp; HTTPS</figcaption>
       </figure>
+      <ol class="legend">
+        <li><span class="n">1</span><span>Type your domain here and press <strong>Save</strong>. GitHub will likely say DNS isn&rsquo;t configured &mdash; expected, because you add those records next.</span></li>
+        <li><span class="n">2</span><span><strong>Save</strong>. Beside it, <strong>Remove</strong> appears only once a domain is set, to clear it again.</span></li>
+        <li><span class="n">3</span><span><strong>Enforce HTTPS</strong> &mdash; read the warning below before touching this.</span></li>
+      </ol>
 
       <div class="warn">
         <strong>Web3 domains cannot use HTTPS &mdash; leave this alone</strong>
@@ -598,6 +665,24 @@ git push -u origin main</code></pre>
       <pre><code>nslookup yourdomain.com</code></pre>
 
       <p>You want to see <code>185.199.108.153</code>. Then open your domain in a browser.</p>
+
+      <div class="note">
+        <strong>If you&rsquo;re checking a web3 domain</strong>
+        <p>
+          A normal <code>nslookup</code> against a public resolver will always
+          return <strong>NXDOMAIN</strong>, and that is <em>correct</em> rather than a
+          fault &mdash; the name lives on an alt-root, not in the ordinary DNS tree. It
+          tells you nothing about whether your setup is right. Ask the alt-root&rsquo;s own
+          nameservers directly instead:
+        </p>
+      </div>
+
+      <pre><code>nslookup yourdomain.com ns1.noto.network</code></pre>
+
+      <p>
+        Now a stale answer is meaningful: you can see whether the nameserver has
+        actually picked up your change yet.
+      </p>
 
       <table>
         <thead>
