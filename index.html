@@ -385,9 +385,10 @@ figcaption {
         <li>Leave everything else alone and click <strong>Create repository</strong></li>
       </ol>
 
-      <div class="shot-pending" data-shot="02-repo-new">
-        Screenshot: the &ldquo;Create a new repository&rdquo; page
-      </div>
+      <figure>
+        <img src="shots/01-create-repo.png" alt="The GitHub Create a new repository page, with stepbystep entered as the repository name and a green confirmation that the name is available." width="1000" height="844">
+        <figcaption>github.com/new &mdash; the name is available and visibility is set to Public.</figcaption>
+      </figure>
 
       <h3>Upload your files</h3>
       <p>
@@ -396,8 +397,29 @@ figcaption {
         <strong>Commit changes</strong>.
       </p>
 
-      <div class="shot-pending" data-shot="02b-repo-upload">
-        Screenshot: files uploaded, ready to commit
+      <div class="note">
+        <strong>If you&rsquo;re comfortable with git</strong>
+        <p>
+          Drag-and-drop works, but it caps out at 100 files and gives you no history
+          control. Once you&rsquo;re past the first commit, the command line is faster:
+        </p>
+      </div>
+
+      <pre><code>git init -b main
+git add .
+git commit -m "Add site"
+git branch -M main
+git remote add origin https://github.com/yioliop921/stepbystep.git
+git push -u origin main</code></pre>
+
+      <div class="warn">
+        <strong>Never paste your token into a remote URL</strong>
+        <p>
+          URLs like <code>https://user:token@github.com/&hellip;</code> end up in
+          <code>.git/config</code> and in your shell history in plain text. If you must,
+          push and then immediately reset the remote with
+          <code>git remote set-url origin https://github.com/yioliop921/stepbystep.git</code>.
+        </p>
       </div>
 
       <div class="warn">
@@ -434,9 +456,10 @@ figcaption {
         live at, in a green box.
       </p>
 
-      <div class="shot-pending" data-shot="03-settings-pages">
-        Screenshot: Settings &rarr; Pages with Source set to main / (root)
-      </div>
+      <figure>
+        <img src="shots/02-settings-pages.png" alt="GitHub Settings, Pages section, showing Build and deployment with Source set to Deploy from a branch, branch main, folder (root), and the green box confirming the site is live." width="1300" height="850">
+        <figcaption>Settings &rarr; Pages. Source is <strong>Deploy from a branch</strong>, branch <code>main</code>, folder <code>/ (root)</code>.</figcaption>
+      </figure>
 
       <div class="note">
         <strong>Test this URL now</strong>
@@ -458,7 +481,47 @@ figcaption {
 
       <p>Two pieces: a file in the repo, and DNS records at your domain provider.</p>
 
-      <h3>4a — add the CNAME file</h3>
+      <h3>4a — set the custom domain in GitHub</h3>
+      <p>
+        Back in <strong>Settings → Pages</strong>, scroll to <strong>Custom domain</strong>,
+        type your domain, and press <strong>Save</strong>. GitHub will try to verify it and
+        will usually say DNS is not configured yet &mdash; that&rsquo;s expected at this point,
+        because you haven&rsquo;t added the records in step 4b.
+      </p>
+
+      <figure>
+        <img src="shots/03-custom-domain.png" alt="GitHub Pages Custom domain field, with the Enforce HTTPS checkbox ticked and greyed out underneath." width="1300" height="850">
+        <figcaption>The <strong>Custom domain</strong> box sits above <strong>Enforce HTTPS</strong>.</figcaption>
+      </figure>
+
+      <div class="warn">
+        <strong>Web3 domains cannot use HTTPS &mdash; leave this alone</strong>
+        <p>
+          If your domain is a web3 domain on the Freename alt-root (anything ending in
+          <code>.virtualsociety</code>, <code>.hodl</code>, <code>.nfts</code>,
+          <code>.metaverse</code> and so on), it is <strong>HTTP-only</strong>. No
+          certificate can be issued for it, so <strong>Enforce HTTPS must stay off</strong>
+          and your site will be reached over <code>http://</code>.
+        </p>
+        <p>
+          If you tick it anyway, GitHub will refuse and tell you the certificate
+          doesn&rsquo;t exist yet. That error is not a glitch &mdash; it means the domain
+          genuinely cannot be verified. Visitors will see a browser warning on
+          <code>http://</code>; there is nothing to fix, and nothing you should be
+          doing about it.
+        </p>
+      </div>
+
+      <div class="note">
+        <strong>What to do instead</strong>
+        <p>
+          Keep the site honest rather than pretending. Serve it over plain HTTP, don&rsquo;t
+          collect passwords or personal data on it, and don&rsquo;t embed anything that
+          needs a secure context. A static page with no secrets has nothing to lose here.
+        </p>
+      </div>
+
+      <h3>4b — add the CNAME file</h3>
       <p>
         In your repo, create a file named exactly <code>CNAME</code> containing one line:
         your domain, nothing else.
@@ -467,8 +530,8 @@ figcaption {
       <pre><code>stepbystep.virtualsociety</code></pre>
 
       <p>
-        GitHub reads this file, verifies the domain, and starts serving your repo on it.
-        Commit it the same way you committed the others.
+        GitHub reads this file and serves your repo on that domain. Commit it the same way
+        you committed the others.
       </p>
 
       <div class="warn">
@@ -574,6 +637,15 @@ figcaption {
           301-redirects the Pages URL to your custom domain. If that domain isn't serving
           yet, rename <code>CNAME</code> to <code>CNAME.disabled</code> and commit. The
           Pages URL comes back immediately. Rename it back when your domain works.
+        </p>
+      </div>
+
+      <div class="trouble">
+        <h3>GitHub says &ldquo;the certificate does not exist yet&rdquo;</h3>
+        <p>
+          That's <strong>Enforce HTTPS</strong> being refused. For a web3 domain this is
+          permanent and correct: those domains can't hold a certificate. Leave the box
+          unticked and carry on. Nothing is broken.
         </p>
       </div>
 
