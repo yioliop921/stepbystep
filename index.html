@@ -614,7 +614,7 @@ git push -u origin main</code></pre>
       </div>
 
       <h3>4b — add the DNS records</h3>
-      <p>At your domain provider, add these. The A record points at GitHub's servers; the CNAME handles <code>www.</code></p>
+      <p>At your domain provider, add these. The A records point at GitHub's servers; the CNAME handles <code>www.</code></p>
 
       <table>
         <thead>
@@ -627,7 +627,7 @@ git push -u origin main</code></pre>
       </table>
 
       <p>
-        GitHub uses four anycast IPs. One is enough to get going; adding all four makes
+        GitHub uses four anycast IPs. Add all four &mdash; they cost nothing and they make
         the site resilient if any single address is ever withdrawn:
       </p>
 
@@ -635,6 +635,10 @@ git push -u origin main</code></pre>
 185.199.109.153
 185.199.110.153
 185.199.111.153</code></pre>
+
+      <div class="shot-pending" data-shot="04-dns-editor">
+        Screenshot goes here &mdash; the DNS record editor with the four A rows and the www CNAME.
+      </div>
 
       <div class="note">
         <strong>The two values people get wrong</strong>
@@ -645,6 +649,51 @@ git push -u origin main</code></pre>
           path. <code>username.github.io</code>, never
           <code>username.github.io/myrepo</code>.
         </p>
+      </div>
+
+      <h3>4c — web3 domains need a signed record</h3>
+      <p>
+        This is the step that surprises people, and it has nothing to do with GitHub. On a
+        web3 domain your records live on a blockchain, and the nameserver reads them from
+        there. Two consequences:
+      </p>
+
+      <ul class="ticks">
+        <li>A record saved in your account&rsquo;s dashboard but never written to the chain simply won&rsquo;t be served. The dashboard can look perfect while the domain points somewhere else.</li>
+        <li>Each address needs to exist in its own on-chain slot. Four IPs means four records, not one record with four values.</li>
+      </ul>
+
+      <table>
+        <thead>
+          <tr><th>slot</th><th>value</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>record.A.0</td><td>185.199.108.153</td></tr>
+          <tr><td>record.A.1</td><td>185.199.109.153</td></tr>
+          <tr><td>record.A.2</td><td>185.199.110.153</td></tr>
+          <tr><td>record.A.3</td><td>185.199.111.153</td></tr>
+          <tr><td>REDIRECT.WEBSITE.0</td><td>https://username.github.io/&lt;repo&gt;/</td></tr>
+        </tbody>
+      </table>
+
+      <div class="warn">
+        <strong>Two gotchas that cost real time</strong>
+        <p>
+          <strong>Case matters.</strong> The redirect key is <code>REDIRECT.WEBSITE.0</code>,
+          written in capitals. <code>redirect.website.0</code> in lowercase is a
+          <em>different record</em>, and it will sit there looking correct while doing
+          nothing at all.
+        </p>
+        <p>
+          <strong>Editing a record can break it.</strong> Changing an existing record in
+          place sometimes leaves it without a valid chain slot. If an edit doesn&rsquo;t
+          start working, delete the record and create it again rather than editing it a
+          second time.
+        </p>
+      </div>
+
+      <div class="shot-pending" data-shot="04b-web3-records">
+        Screenshot goes here — the web3 records section showing the record.A.* slots.
       </div>
 
       <div class="shot-pending" data-shot="04-dns-records">
@@ -722,6 +771,17 @@ git push -u origin main</code></pre>
           301-redirects the Pages URL to your custom domain. If that domain isn't serving
           yet, rename <code>CNAME</code> to <code>CNAME.disabled</code> and commit. The
           Pages URL comes back immediately. Rename it back when your domain works.
+        </p>
+      </div>
+
+      <div class="trouble">
+        <h3>My records look right in the dashboard but the domain points elsewhere</h3>
+        <p>
+          On a web3 domain this is almost always the blockchain, not a typo. The
+          dashboard and the nameserver read from different places, and only one of them
+          is authoritative. Check that each address exists in its own
+          <code>record.A.*</code> slot — a record that's saved but not written to the
+          chain will never be served, no matter how long you wait.
         </p>
       </div>
 
