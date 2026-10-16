@@ -636,9 +636,22 @@ git push -u origin main</code></pre>
 185.199.110.153
 185.199.111.153</code></pre>
 
-      <div class="shot-pending" data-shot="04-dns-editor">
-        Screenshot goes here &mdash; the DNS record editor with the four A rows and the www CNAME.
-      </div>
+      <figure>
+        <div class="shot">
+          <img src="shots/05-freename-dns.png" alt="The Freename dashboard DNS Records table for stepbystep.virtualsociety, showing NS, A and CNAME rows with Edit and Delete controls." width="1500" height="350">
+          <span class="pin" style="left:11%; top:52%">1</span>
+          <span class="pin" style="left:11%; top:68%">2</span>
+          <span class="pin" style="left:38%; top:84%">3</span>
+          <span class="pin" style="left:11%; top:93%">4</span>
+        </div>
+        <figcaption>The <strong>DNS Records</strong> table in your Freename dashboard</figcaption>
+      </figure>
+      <ol class="legend">
+        <li><span class="n">1</span><span>Two <strong>NS</strong> rows pointing at <code>ns1</code> and <code>ns2.noto.network</code>. These come with the domain &mdash; you shouldn&rsquo;t need to add them.</span></li>
+        <li><span class="n">2</span><span>The <strong>A</strong> row. This is the one you change, and it takes <strong>one IP at a time</strong> &mdash; that&rsquo;s why it says <code>185.199.108.153</code> on its own row.</span></li>
+        <li><span class="n">3</span><span>The <strong>www</strong> CNAME pointing at your Pages host. Note there&rsquo;s no TTL column here &mdash; web3 records don&rsquo;t use one.</span></li>
+        <li><span class="n">4</span><span><strong>Add a Record</strong> is how you add each row. You&rsquo;ll click it four times for the four IPs.</span></li>
+      </ol>
 
       <div class="note">
         <strong>The two values people get wrong</strong>
@@ -692,8 +705,31 @@ git push -u origin main</code></pre>
         </p>
       </div>
 
-      <div class="shot-pending" data-shot="04b-web3-records">
-        Screenshot goes here — the web3 records section showing the record.A.* slots.
+      <figure>
+        <div class="shot">
+          <img src="shots/06-freename-web3.png" alt="The Freename dashboard Web3 Records table showing BROWSER.REDIRECT_URL and RECORD.A.0 through RECORD.A.3 with their IP values." width="1500" height="330">
+          <span class="pin" style="left:16%; top:22%">1</span>
+          <span class="pin" style="left:13%; top:38%">2</span>
+          <span class="pin" style="left:16%; top:70%">3</span>
+          <span class="pin" style="left:11%; top:93%">4</span>
+        </div>
+        <figcaption>The <strong>Web3 Records</strong> table &mdash; the part that actually controls resolution</figcaption>
+      </figure>
+      <ol class="legend">
+        <li><span class="n">1</span><span><code>BROWSER.REDIRECT_URL</code>. Where a Web3-aware browser sends people who can&rsquo;t resolve the name themselves. Note the <strong>capital letters</strong>.</span></li>
+        <li><span class="n">2</span><span><code>RECORD.A.0</code> &rarr; <code>185.199.108.153</code>. One slot, one address. This is the record that genuinely matters &mdash; the DNS table above is a convenience view.</span></li>
+        <li><span class="n">3</span><span><code>RECORD.A.1</code>, <code>.2</code>, <code>.3</code> hold the other three IPs, in order. All four should point at GitHub.</span></li>
+        <li><span class="n">4</span><span><strong>Add a Record</strong> again, here to create each chain slot.</span></li>
+      </ol>
+
+      <div class="warn">
+        <strong>Dashboard green, domain still wrong?</strong>
+        <p>
+          Look at the <strong>Wallet Address</strong> box near the top of this same page,
+          and the <strong>Sign Transaction</strong> button beside it. A record saved here
+          only reaches the network once that transaction is signed from your wallet. Until
+          then the table can look perfect while your domain points somewhere else entirely.
+        </p>
       </div>
 
       <div class="shot-pending" data-shot="04-dns-records">
