@@ -53,6 +53,18 @@ h1, h2, h3 { line-height: 1.15; letter-spacing: -0.02em; margin: 0; overflow-wra
 p { margin: 0 0 1rem; }
 a { color: var(--ink); }
 
+/* cross-references like "see step 01" - must read as clickable */
+.xref {
+  color: var(--accent); font-weight: 600;
+  text-decoration: underline; text-decoration-thickness: 2px;
+  text-underline-offset: .18em;
+}
+.xref:hover { background: var(--accent-bg); text-decoration: none; }
+
+/* anchor targets clear of the top edge, and glide rather than jump */
+html { scroll-behavior: smooth; }
+section[id], .step[id] { scroll-margin-top: 1.5rem; }
+
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 
 .skip { position: absolute; left: -9999px; background: var(--ink); color: var(--paper); padding: .6rem 1rem; font-family: var(--mono); }
@@ -282,6 +294,7 @@ footer p { margin: 0; }
 
 @media (prefers-reduced-motion: reduce) {
   * { transition-duration: .01ms !important; }
+  html { scroll-behavior: auto; }
 }
 </style>
 </head>
@@ -425,7 +438,7 @@ footer p { margin: 0; }
   <p>
     Every one of these sits at the <strong>top level</strong> of the folder. That is not a
     style preference &mdash; put <code>index.html</code> inside a subfolder and the site 404s,
-    and you&rsquo;ll see it happen in step 06.
+    and you&rsquo;ll see it happen in <a class="xref" href="#verify">step 06</a>.
   </p>
 
   <h3>index.html</h3>
@@ -523,8 +536,8 @@ footer p { margin: 0; }
   <ol class="legend">
     <li><span class="n">1</span><span>Your repo&rsquo;s address: <code>github.com/yourusername/yourreponame</code>.</span></li>
     <li><span class="n">2</span><span>Any <strong>images</strong> folder, if your site uses one. Entirely optional &mdash; a site with no images simply won&rsquo;t have it.</span></li>
-    <li><span class="n">3</span><span><code>.nojekyll</code>. Empty, no extension. Without it, files can silently vanish from the published site &mdash; see step 01.</span></li>
-    <li><span class="n">4</span><span><code>CNAME</code>, added in step 04. Ignore it for now; you can add it later without disturbing anything else.</span></li>
+    <li><span class="n">3</span><span><code>.nojekyll</code>. Empty, no extension. Without it, files can silently vanish from the published site &mdash; see <a class="xref" href="#files">step 01</a>.</span></li>
+    <li><span class="n">4</span><span><code>CNAME</code>, added in <a class="xref" href="#dns">step 04</a>. Ignore it for now; you can add it later without disturbing anything else.</span></li>
     <li><span class="n">5</span><span><code>index.html</code>. <strong>This must be the one that gets served.</strong></span></li>
   </ol>
 
@@ -704,10 +717,10 @@ git push</code></pre>
     <div class="shot">
       <img src="shots/04-freename-records.png" alt="The Freename Records tab for the domain, showing a resolving status line, the Wallet Address box with Sign Transaction, the Forward Domain toggle left off, a DNS Records table with A, two NS and a www CNAME row, and a Web3 Records table with RECORD.A.0 and REDIRECT.WEBSITE.0." width="1330" height="1221">
     </div>
-    <figcaption>The Freename Records tab &mdash; steps 04 and 05 both happen on this one screen</figcaption>
+    <figcaption>The Freename Records tab &mdash; <a class="xref" href="#dns">step 04</a> and <a class="xref" href="#web3">step 05</a> both happen on this one screen</figcaption>
   </figure>
   <ol class="legend">
-    <li><span class="n">1</span><span>Open your domain, then the <strong>Records</strong> tab. The status line under the domain name should read <strong>&ldquo;resolves&rdquo;</strong> &mdash; if it doesn&rsquo;t yet, you&rsquo;re looking at a name with nothing published, which is normal before step 05.</span></li>
+    <li><span class="n">1</span><span>Open your domain, then the <strong>Records</strong> tab. The status line under the domain name should read <strong>&ldquo;resolves&rdquo;</strong> &mdash; if it doesn&rsquo;t yet, you&rsquo;re looking at a name with nothing published, which is normal before <a class="xref" href="#web3">step 05</a>.</span></li>
     <li><span class="n">2</span><span><strong>Wallet Address</strong> plus the yellow <strong>Sign Transaction</strong> button. This button is what actually commits your records to the chain. Everything below is only configuration until you press it.</span></li>
     <li><span class="n">3</span><span><strong>Forward Domain</strong> &mdash; the trap. Its own caption on screen says it <em>&ldquo;will disable your root A record pointing to 185.199.108.153&rdquo;</em>. Leave it <strong>off</strong>.</span></li>
     <li><span class="n">4</span><span>In <strong>DNS Records</strong>, add a single <code>A</code> row on <code>@</code> with value <code>185.199.108.153</code>, TTL <code>300</code>. The two <code>NS</code> rows are added for you &mdash; leave them.</span></li>
@@ -828,7 +841,7 @@ git push</code></pre>
     <strong>The order that works</strong>
     <p>
       Save the records &rarr; sign the transaction &rarr; wait for the nameserver to pick it up.
-      Nothing in step 04 will appear to work until step 05 is done, and no amount of
+      Nothing in <a class="xref" href="#dns">step 04</a> will appear to work until <a class="xref" href="#web3">step 05</a> is done, and no amount of
       waiting will fix it. This ordering is the single most common reason a web3 domain
       that looks correctly configured never loads.
     </p>
@@ -875,7 +888,7 @@ git push</code></pre>
   <div class="ok">
     <strong>This is the check worth doing first</strong>
     <p>
-      If the preview in step 4 renders your site, GitHub Pages is serving correctly and your
+      If the preview above renders your site, GitHub Pages is serving correctly and your
       DNS is resolving &mdash; which means any failure from here on is something else entirely.
       It also answers the question most people actually have: <em>can a normal person, on a
       normal browser, open my site?</em> Yes.
@@ -1070,7 +1083,7 @@ git push</code></pre>
       slot &mdash; but <code>RECORD_IP.0</code>, <code>A.0</code> or
       <code>REDIRECT.WEBSITE</code> (missing the <code>.0</code>) are three different keys that
       will each save happily and each do nothing. Read the key character by character against
-      the table above.
+      <a class="xref" href="#web3">the table above</a>.
     </p>
   </div>
 
