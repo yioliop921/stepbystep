@@ -63,7 +63,7 @@ a { color: var(--ink); }
 
 /* anchor targets clear of the top edge, and glide rather than jump */
 html { scroll-behavior: smooth; }
-section[id], .step[id] { scroll-margin-top: 1.5rem; }
+section[id], .step[id], .trouble[id] { scroll-margin-top: 1.5rem; }
 
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 
@@ -506,7 +506,7 @@ footer p { margin: 0; }
     <li><span class="n">2</span><span>Give the repository a name. Your Pages address will be <code>username.github.io/<em>this name</em>/</code>, so pick something you can live with in a link.</span></li>
     <li><span class="n">3</span><span>The <strong>Description</strong> is optional and appears on the repo&rsquo;s front page. Write whatever you like.</span></li>
     <li><span class="n">4</span><span><strong>Visibility</strong> &mdash; choose <strong>Public</strong>. Pages on a private repository is a paid feature, and this is the setting people most often leave on the wrong value.</span></li>
-    <li><span class="n">5</span><span><strong>Add README</strong> &mdash; leave it <strong>off</strong>. This guide has you upload your own <code>index.html</code> in the next step, and a README here just adds a file you don&rsquo;t need.</span></li>
+    <li><span class="n">5</span><span><strong>Add README</strong> &mdash; leave it <strong>off</strong>. This guide has you upload your own <code>index.html</code> below, and a README here just adds a file you don&rsquo;t need.</span></li>
     <li><span class="n">6</span><span><strong>Add .gitignore</strong> &mdash; leave it as <strong>No .gitignore</strong>. The template picks a language for you, and for a plain static site there&rsquo;s nothing to ignore.</span></li>
     <li><span class="n">7</span><span><strong>Add license</strong> &mdash; <strong>No license</strong> is fine unless you intend to publish source others reuse.</span></li>
     <li><span class="n">8</span><span>Click <strong>Create repository</strong>.</span></li>
@@ -880,7 +880,7 @@ git push</code></pre>
     <li><span class="n">2</span><span>Type the web3 name you registered on <code>.virtualsociety</code> and press <strong>Resolve</strong>.</span></li>
     <li><span class="n">3</span><span>You get back your mirrored web2 link &mdash; <code>https://yourname.virtualsociety.top/</code>.</span></li>
     <li><span class="n">4</span><span>Your site is previewed right there in the page. If it renders, everything upstream already works.</span></li>
-    <li><span class="n">5</span><span>Click the link to open your site on the web2 address &mdash; this is the same action as step 3, it just also opens it.</span></li>
+    <li><span class="n">5</span><span>Click the link to open your site on the web2 address &mdash; this is the same action as number <strong>3</strong> above, it just also opens it.</span></li>
     <li><span class="n">6</span><span>Top right: your web2 link open on its own, in a normal browser, over HTTPS.</span></li>
     <li><span class="n">7</span><span>Bottom right: <strong>the same site on the web3 address</strong>, <code>yourname.virtualsociety</code>. Identical page. This one needs Noto DNS or a web3 browser &mdash; the web2 one above doesn&rsquo;t.</span></li>
   </ol>
@@ -1006,11 +1006,11 @@ git push</code></pre>
     </ol>
     <p>
       If it is still parked after all four, the record is <strong>stalled</strong> &mdash; see
-      the next entry, which is the fix that actually works.
+      <a class="xref" href="#stalled">the next entry</a>, which is the fix that actually works.
     </p>
   </div>
 
-  <div class="trouble">
+  <div class="trouble" id="stalled">
     <h3>My record is correct but nothing has changed</h3>
     <p>
       This is the stall, and it is the most confusing failure in the whole process, because
