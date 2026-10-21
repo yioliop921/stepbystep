@@ -63,7 +63,7 @@ a { color: var(--ink); }
 
 /* anchor targets clear of the top edge, and glide rather than jump */
 html { scroll-behavior: smooth; }
-section[id], .step[id], .trouble[id] { scroll-margin-top: 1.5rem; }
+section[id], .step[id], .trouble[id] { scroll-margin-top: 4.75rem; }
 
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 
@@ -304,6 +304,8 @@ footer p { margin: 0; }
 @media (max-width: 599px) {
   /* balanced split: brand + three links on the first row, the rest on the second */
   .nav-break { display: block; flex: 0 0 100%; height: 0; }
+  /* the header is two rows tall here, so anchors need to clear it */
+  section[id], .step[id], .trouble[id] { scroll-margin-top: 6.5rem; }
 }
 
 @media (max-width: 400px) {
