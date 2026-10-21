@@ -293,9 +293,11 @@ footer p { margin: 0; }
 }
 
 @media (max-width: 700px) {
-  /* let the nav links flow beside the brand instead of dropping to their own row */
-  .wrap.nav { justify-content: flex-start; align-items: center; gap: .35rem .7rem; padding-block: 11px; }
+  /* let the nav links flow beside the brand and share out the full width */
+  .wrap.nav { justify-content: space-between; align-items: center; gap: .35rem .7rem; padding-block: 11px; }
   nav.links { display: contents; }
+  .brand { flex: 0 0 auto; }
+  nav.links a { flex: 1 1 auto; text-align: center; }
 }
 
 @media (max-width: 400px) {
