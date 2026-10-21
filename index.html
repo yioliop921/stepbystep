@@ -292,6 +292,18 @@ footer p { margin: 0; }
   .tw table { min-width: 19rem; }
 }
 
+@media (max-width: 700px) {
+  /* let the nav links flow beside the brand instead of dropping to their own row */
+  .wrap.nav { justify-content: flex-start; align-items: center; gap: .35rem .7rem; padding-block: 11px; }
+  nav.links { display: contents; }
+}
+
+@media (max-width: 400px) {
+  /* narrowest phones: keep brand + Start/Files/Repo on one row */
+  .wrap.nav { column-gap: .55rem; }
+  .brand { font-size: .88rem; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   * { transition-duration: .01ms !important; }
   html { scroll-behavior: auto; }
