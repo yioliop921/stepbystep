@@ -653,9 +653,11 @@ git push -u origin main</code></pre>
 
   <h3>4a &mdash; add the CNAME file</h3>
   <p>
-    This one small file is what connects your domain to your repo. Create a file named
-    exactly <code>CNAME</code> containing one line &mdash; your domain, and nothing else.
-    No quotes, no slash, no trailing dot.
+    This one small file is what connects your domain to your repo. Saving the custom domain in
+    <a class="xref" href="#pages">step 03</a> usually creates it for you, so open your repo and
+    look first. If <code>CNAME</code> is there, holding one line &mdash; your domain &mdash; and
+    nothing else, you can skip to 4b. If it isn&rsquo;t, make it by hand: a file named exactly
+    <code>CNAME</code> containing one line, with no quotes, no slash and no trailing dot.
   </p>
   <pre><code>yourdomain.virtualsociety</code></pre>
 
@@ -748,8 +750,8 @@ git push</code></pre>
     <li><span class="n">3</span><span><strong>Forward Domain</strong> &mdash; the trap. Its own caption on screen says it <em>&ldquo;will disable your root A record pointing to 185.199.108.153&rdquo;</em>. Leave it <strong>off</strong>.</span></li>
     <li><span class="n">4</span><span>In <strong>DNS Records</strong>, add a single <code>A</code> row on <code>@</code> with value <code>185.199.108.153</code>, TTL <code>300</code>. The two <code>NS</code> rows are added for you &mdash; leave them.</span></li>
     <li><span class="n">5</span><span>Optional: a <code>CNAME</code> row on <code>www</code> pointing at <code>yourusername.github.io</code>. Your bare domain works without it; this just makes <code>www</code> behave the same way.</span></li>
-    <li><span class="n">6</span><span>In <strong>Web3 Records</strong>, add <code>RECORD.A.0</code> with the same IP, <code>185.199.108.153</code>. This on-chain slot is what the nameserver reads.</span></li>
-    <li><span class="n">7</span><span>Also in <strong>Web3 Records</strong>, add <code>REDIRECT.WEBSITE.0</code> with your Pages URL &mdash; <code>https://yourusername.github.io/yourrepo/</code>. Note it points at the <code>github.io</code> address, <em>not</em> at your web3 domain.</span></li>
+    <li><span class="n">6</span><span>In <strong>Web3 Records</strong>, add <code>record.A.0</code> &mdash; lower-case <code>record</code>, capital <code>A</code> &mdash; with the same IP, <code>185.199.108.153</code>. This on-chain slot is what the nameserver reads.</span></li>
+    <li><span class="n">7</span><span>Also in <strong>Web3 Records</strong>, add <code>redirect.WEBSITE.0</code> &mdash; lower-case <code>redirect</code>, capital <code>WEBSITE</code> &mdash; with your Pages URL, <code>https://yourusername.github.io/yourrepo/</code>. Note it points at the <code>github.io</code> address, <em>not</em> at your web3 domain.</span></li>
   </ol>
 
   <div class="warn">
@@ -796,16 +798,16 @@ git push</code></pre>
   <h3>Two records, not six</h3>
   <p>
     GitHub Pages publishes on four IP addresses, and most guides tell you to fill four on-chain
-    slots. We tested it. <strong>One is enough.</strong> Add the second slot and delete
-    slots <code>.1</code>, <code>.2</code> and <code>.3</code> &mdash; the site keeps serving
-    perfectly. Fewer records, fewer things to go wrong.
+    slots. We tested it. <strong>One is enough.</strong> Add <code>.0</code> and leave
+    <code>.1</code>, <code>.2</code> and <code>.3</code> empty &mdash; the site keeps serving
+    perfectly in every browser that reads the record. Fewer records, fewer things to go wrong.
   </p>
 
   <div class="tw"><table>
     <thead><tr><th scope="col">slot</th><th scope="col">value</th><th scope="col">needed?</th></tr></thead>
     <tbody>
-      <tr><th scope="row">RECORD.A.0</th><td>185.199.108.153</td><td>required</td></tr>
-      <tr><th scope="row">REDIRECT.WEBSITE.0</th><td>https://username.github.io/&lt;repo&gt;/</td><td>recommended</td></tr>
+      <tr><th scope="row">record.A.0</th><td>185.199.108.153</td><td>required &mdash; nameserver</td></tr>
+      <tr><th scope="row">redirect.WEBSITE.0</th><td>https://username.github.io/&lt;repo&gt;/</td><td>required &mdash; web3 browsers</td></tr>
     </tbody>
   </table></div>
 
@@ -814,7 +816,7 @@ git push</code></pre>
     <p>
       The value is <code>https://username.github.io/&lt;repo&gt;/</code> &mdash; the
       <code>.github.io</code> address, ending with a slash. That is deliberate: of the two
-      addresses your site has, it is the only one that resolves publicly. Your web3 domain
+      addresses your site has, it is the only one that ordinary DNS can resolve. Your web3 domain
       lives on an alt-root and returns <code>NXDOMAIN</code> to anything on the ordinary web,
       so a redirect pointing back at itself has nowhere to land.
     </p>
@@ -823,20 +825,21 @@ git push</code></pre>
     </p>
   </div>
 
-  <div class="ok">
-    <strong>Capitalisation does not matter here</strong>
+  <div class="warn">
+    <strong>Capitalisation decides whether this works at all</strong>
     <p>
-      We expected this to be a trap, so we tested it. It isn&rsquo;t. Freename matches these
-      keys <strong>case-insensitively</strong>: typing <code>record.A.0</code> or
-      <code>RECORD.A.0</code> updates the same single row rather than creating a second one,
-      and the same holds for <code>REDIRECT.WEBSITE.0</code>.
+      These keys are <strong>case-sensitive on the chain</strong>. <code>record.A.0</code> and
+      <code>RECORD.A.0</code> are two different keys: the second saves, appears in the table,
+      and is never read. This one detail has taken an entire portfolio offline &mdash; everything
+      looks correct, one browser works, another doesn&rsquo;t &mdash; so type the key exactly as
+      the table shows it: lower-case <code>record</code>, capital <code>A</code>, lower-case
+      <code>redirect</code>, capital <code>WEBSITE</code>.
     </p>
     <p>
-      A record may be displayed in either case depending on how it was first saved, so you may
-      see <code>RECORD.A.0</code> in the dashboard and <code>record.A.0</code> in an export.
-      Both are the same slot. What <em>does</em> create a stray second record is a different
-      key name entirely &mdash; <code>RECORD_IP.0</code>, <code>A.0</code> &mdash; so check
-      the spelling rather than the case.
+      The dashboard will still display it as <code>RECORD.A.0</code>. That is a display label,
+      not the stored key &mdash; it upper-cases whatever you typed, which is exactly why the
+      mistake is invisible. If a record ever needs recreating, recreate it in the same case it
+      went in, never in the case the table renders.
     </p>
   </div>
 
@@ -853,8 +856,9 @@ git push</code></pre>
       In <strong>DNS Records</strong> you should see an <code>A</code> row on
       <code>185.199.108.153</code>, the two <code>NS</code> rows, and your optional
       <code>www</code> CNAME. In <strong>Web3 Records</strong> you should see exactly
-      <strong>two</strong> rows: <code>RECORD.A.0</code> with the IP, and
-      <code>REDIRECT.WEBSITE.0</code> with your Pages URL. That is the whole configuration.
+      <strong>two</strong> rows: <code>record.A.0</code> with the IP, and
+      <code>redirect.WEBSITE.0</code> with your Pages URL, both shown in capitals in the table.
+      That is the whole configuration.
       Then press <strong>Sign Transaction</strong> &mdash; and only then does any of it reach
       the chain.
     </p>
@@ -933,7 +937,7 @@ git push</code></pre>
   <ol class="legend">
     <li><span class="n">1</span><span>Go to <code>virtualsociety.top/tool/dnscheck</code>.</span></li>
     <li><span class="n">2</span><span>Type your web3 name and press <strong>Look up</strong>.</span></li>
-    <li><span class="n">3</span><span>You get your published records. The <code>A</code> row should read <code>185.199.108.153</code>, with <code>NS 1</code> and <code>NS 2</code> showing the Noto nameservers. <code>AAAA</code>, <code>CNAME</code>, <code>MX</code> and <code>TXT</code> showing <em>none published</em> is perfectly normal.</span></li>
+    <li><span class="n">3</span><span>You get your published records. The <code>A</code> row should read <code>185.199.108.153</code>, with <code>NS 1</code> and <code>NS 2</code> showing the Noto nameservers. <code>AAAA</code>, <code>MX</code> and <code>TXT</code> showing <em>none published</em> is perfectly normal. <code>CNAME</code> is empty unless you added the optional <code>www</code> row in <a class="xref" href="#dns">step 04</a> &mdash; both states are correct.</span></li>
   </ol>
 
   <h3>The command line</h3>
@@ -961,7 +965,7 @@ git push</code></pre>
       the DNS end.
     </p>
     <p>
-      It works on macOS and Linux too, which the <code>nslookup</code> form already does. If
+      Both commands work the same on macOS, Linux and Windows. If
       <code>curl</code> isn&rsquo;t to hand, open the web2 mirror link from the first check
       instead &mdash; it proves the same thing without a terminal.
     </p>
@@ -1066,15 +1070,17 @@ git push</code></pre>
   <div class="trouble">
     <h3>It works everywhere except Obian</h3>
     <p>
-      Obian resolves your domain to an IP and then requests that IP <em>on its own</em>,
-      without telling GitHub which site it wants. GitHub serves thousands of sites and needs
-      the hostname to pick one, so it answers <strong>404</strong> to a bare IP request. Your
-      setup is perfect &mdash; this is a property of how Obian connects.
+      Obian opens your site by reading the <strong>redirect record</strong>, not by asking for the
+      bare IP. If <code>redirect.WEBSITE.0</code> is missing &mdash; or was written with the wrong
+      capitals, so it exists under a key nothing reads &mdash; Obian finds no address to open and
+      the domain fails there while every other browser works.
     </p>
     <p>
-      <strong>No DNS or record setting changes this.</strong> If your site must open in Obian,
-      host it somewhere whose IP answers without a hostname, such as Vercel. Every other
-      browser, including the web2 mirror link, is unaffected.
+      Check <a class="xref" href="#web3">step 05</a>: the record must be spelled
+      <code>redirect.WEBSITE.0</code> exactly, with your Pages URL as the value. Delete it,
+      recreate it in that case, sign again, and wait two to three minutes. <strong>Changing host
+      does not help</strong> &mdash; a bare IP request answers 404 at GitHub and 308 at Vercel, so
+      no host serves a site once the redirect record is wrong.
     </p>
   </div>
 
@@ -1101,12 +1107,17 @@ git push</code></pre>
   <div class="trouble">
     <h3>My record saved but nothing changed</h3>
     <p>
-      Almost always the wrong <em>name</em>, not the wrong case. Casing is matched
-      case-insensitively, so <code>record.A.0</code> and <code>RECORD.A.0</code> are the same
-      slot &mdash; but <code>RECORD_IP.0</code>, <code>A.0</code> or
-      <code>REDIRECT.WEBSITE</code> (missing the <code>.0</code>) are three different keys that
-      will each save happily and each do nothing. Read the key character by character against
-      <a class="xref" href="#web3">the table above</a>.
+      Two suspects, in that order. <strong>The capitals:</strong> <code>RECORD.A.0</code> saves,
+      displays and is ignored, because the key the chain stores is <code>record.A.0</code> and the
+      two are different keys. Only the lower-case form in
+      <a class="xref" href="#web3">step 05</a> is read. <strong>The rest of the name:</strong>
+      <code>RECORD_IP.0</code>, <code>A.0</code> or <code>REDIRECT.WEBSITE</code> without the
+      <code>.0</code> are three more keys that each save happily and each do nothing. Read the
+      key character by character against the table.
+    </p>
+    <p>
+      The cure is the same either way, and it is not editing: delete the record, add it again with
+      the exact key, then sign.
     </p>
   </div>
 
